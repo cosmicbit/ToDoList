@@ -84,10 +84,26 @@ class NewTaskModelView: UIView {
 //        
 //        
 //    }
+    func shakeAnimation(duration: TimeInterval = 0.5, translation: CGFloat = 10, completion: (() -> Void)? = nil) {
+            let animation = CAKeyframeAnimation(keyPath: "transform.translation.x")
+            animation.timingFunctions = [CAMediaTimingFunction(name: .easeInEaseOut)]
+            animation.values = [0, -translation, translation, -translation, translation, -translation / 2, translation / 2, 0]
+            animation.duration = duration
+            animation.isRemovedOnCompletion = true
+            animation.fillMode = .forwards
+
+            CATransaction.begin()
+            CATransaction.setCompletionBlock(completion)
+            layer.add(animation, forKey: "shake")
+            CATransaction.commit()
+        }
     
     @IBAction func submitButtonTapped(_ sender: Any) {
         guard let caption = descriptionTextView.text,
-              caption.count >= 4 else {
+              descriptionTextView.textColor != UIColor.placeholderText,
+              caption.count >= 4
+        else {
+            shakeAnimation()
             return
         }
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
