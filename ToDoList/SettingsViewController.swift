@@ -12,21 +12,24 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var settingsTitleLabel: UILabel!
     @IBOutlet weak var appThemeLabel: UILabel!
     @IBOutlet weak var modalView: UIView!
-    
     @IBOutlet weak var appThemeSegmentedControl: UISegmentedControl!
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         settingsTitleLabel.font = UIFont.style(.h1)
         appThemeLabel.font = UIFont.style(.caption)
         let window = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? []}.first { $0.isKeyWindow }
-        if window?.overrideUserInterfaceStyle == .light {
-            appThemeSegmentedControl.selectedSegmentIndex = 0
-        }
-        else if window?.overrideUserInterfaceStyle == .dark {
-            appThemeSegmentedControl.selectedSegmentIndex = 1
-        }
-        else {
-            appThemeSegmentedControl.selectedSegmentIndex = 2
+        if let window = window {
+            switch window.overrideUserInterfaceStyle {
+            case .light:
+                appThemeSegmentedControl.selectedSegmentIndex = 0
+            case .dark:
+                appThemeSegmentedControl.selectedSegmentIndex = 1
+            case .unspecified:
+                appThemeSegmentedControl.selectedSegmentIndex = 2
+            @unknown default:
+                appThemeSegmentedControl.selectedSegmentIndex = 2
+            }
         }
     }
     
