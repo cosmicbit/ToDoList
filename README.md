@@ -65,6 +65,11 @@ A simple yet stylish To-Do List app for iOS, built with Swift and UIKit. Organiz
 - `Views/` – Custom UI components
 - `Design/` – Typography and design helpers
 
+## Documentation
+ToDoList app's documantation can be found in Xcode.
+
+To view documentation, clone the project, navigate to the toolbar then window -> Developer Documentation
+
 ## License
 
 This project is licensed under the MIT License. See [LICENSE](LICENSE) for details.
