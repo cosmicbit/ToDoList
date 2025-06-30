@@ -23,8 +23,10 @@ A simple yet stylish To-Do List app for iOS, built with Swift and UIKit. Organiz
   Choose between light, dark, or system themes directly from the in-app settings.
 
 ## Screenshots
-
-<!-- Add screenshots here if available -->
+<p align="center">
+  <img src="https://github.com/cosmicbit/ToDoList/blob/main/screenshot1.png" alt="Screenshot 1" width="400"/>
+  <img src="https://github.com/cosmicbit/ToDoList/blob/main/screenshot2.png" alt="Screenshot 2" width="400"/>
+</p>
 
 ## Getting Started
 
