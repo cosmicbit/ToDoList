@@ -6,10 +6,28 @@
 //
 
 import UIKit
+
+//TODO: - Move to separate protocols class
+/**
+ NewTaskDelegate links the NewTaskViewController and the NewTaskModalView . This helps the NewTaskViewController know when to dismiss when the x button is tapped on the
+ the NewTaskModalView and to present an error alert when a user enters invalid input.
+ */
+
 protocol NewTaskDelegate: AnyObject {
+    ///Dismiss the NewTaskViewController. Called when x button is tapped on NewTaskModalView
     func closeView()
+    
+    /**
+     This presents an error alert when the user enters invalid input.
+     - Parameters:
+        - title: This is the title of the error alert
+        - message: A short description of what went wrong
+     
+     */
     func presentErrorAlert(title: String, message: String)
 }
+
+///This class is responsible for creating or editing a task
 class NewTaskViewController: UIViewController {
     
     lazy var modelView: NewTaskModelView = {
@@ -23,6 +41,12 @@ class NewTaskViewController: UIViewController {
     
     private var task: Task?
     
+    /**
+     This creates the NewTaskViewController
+     - Parameters:
+        - task: If a task is being edited, task should be passed. If a new task is being created, task should be nil.
+     - Returns: NewRaskViewController with a NewTaskModalView for the user to edit or create a task
+     */
     init(task: Task? = nil){
         super.init(nibName: nil, bundle: nil)
         modalTransitionStyle = .crossDissolve
@@ -37,8 +61,18 @@ class NewTaskViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
+        
+        //We change the transform of the model view to zero to perform a scale up animation when the view appears
+        modelView.transform = CGAffineTransform(scaleX: 0, y: 0)
         view.addSubview(modelView)
         
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        
+        //This animates the modal view using a scale up animation whereas it was initially set to a scale of zero in the viewDidLoad
+        modelView.scaleUpAnimation()
     }
     
     

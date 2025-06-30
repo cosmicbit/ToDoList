@@ -179,6 +179,7 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="settingsButton" destination="AH2-Wj-g7K" id="OKm-3B-yH6"/>
                         <outlet property="tableView" destination="IOb-7x-8Zr" id="GXc-Qc-jUn"/>
                         <outlet property="titleDate" destination="Nmt-oQ-wMM" id="Zgp-zd-iUH"/>
                         <outlet property="titleView" destination="3qL-DU-c0t" id="qim-l0-dnn"/>

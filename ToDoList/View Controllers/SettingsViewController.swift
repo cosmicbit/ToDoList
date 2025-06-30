@@ -7,6 +7,8 @@
 
 import UIKit
 
+///This allows the user to change settings. The only setting available is the ability to change interface style to light, dark or system preference
+///
 class SettingsViewController: UIViewController {
 
     @IBOutlet weak var settingsTitleLabel: UILabel!
@@ -16,8 +18,17 @@ class SettingsViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        setupView()
+    }
+    
+    private func setupView() {
         settingsTitleLabel.font = UIFont.style(.h1)
         appThemeLabel.font = UIFont.style(.caption)
+        
+        //We change the transform of the model view to zero to perform a scale up animation when the view appears
+        modalView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        
+        //We change the segmented control's selected index to the current interface style
         let window = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? []}.first { $0.isKeyWindow }
         if let window = window {
             switch window.overrideUserInterfaceStyle {
@@ -33,6 +44,12 @@ class SettingsViewController: UIViewController {
         }
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        //This animates the modal view using a scale up animation whereas it was initially set to a scale of zero in the viewDidLoad
+        modalView.scaleUpAnimation()
+    }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         modalView.layer.cornerRadius = 5
@@ -44,6 +61,16 @@ class SettingsViewController: UIViewController {
     }
     
      @IBAction func segmentedControlValueChanged(_ sender: UISegmentedControl) {
+         /*
+          The hierarchy for views is as follows:
+          - uiapplication
+          - windowscenes
+          - windows
+          - keywindow
+          - overrideUserInterfaceStyle
+          We obtain the window to change the interface style below
+          */
+         
          let window = UIApplication.shared.connectedScenes.flatMap { ($0 as? UIWindowScene)?.windows ?? []}.first { $0.isKeyWindow }
          
          if sender.selectedSegmentIndex == 0 {
@@ -56,14 +83,5 @@ class SettingsViewController: UIViewController {
              window?.overrideUserInterfaceStyle = .unspecified
          }
      }
-    /*
-     // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destination.
-        // Pass the selected object to the new view controller.
-    }
-    */
 
 }
