@@ -91,8 +91,9 @@ class NewTaskModelView: UIView {
               descriptionTextView.textColor != UIColor.placeholderText,
               caption.count >= 4
         else {            
-            shakeAnimation()
+            
             delegate?.presentErrorAlert(title: "Caption Error", message: "You need to provide a description with 4 or more characters.")
+            shakeAnimation()
             return
         }
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)

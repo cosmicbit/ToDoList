@@ -17,10 +17,10 @@
         </array>
     </customFonts>
     <scenes>
-        <!--View Controller-->
+        <!--Home View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="HomeViewController" customModule="ToDoList" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="390" height="844"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -40,7 +40,7 @@
                                         <state key="normal" title="Button"/>
                                         <buttonConfiguration key="configuration" style="plain" image="gearshape.fill" catalog="system"/>
                                         <connections>
-                                            <action selector="settingsButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="3A8-Sf-5rs"/>
+                                            <action selector="settingsButtonTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ad2-9P-dO3"/>
                                         </connections>
                                     </button>
                                 </subviews>
@@ -179,15 +179,15 @@
                         </constraints>
                     </view>
                     <connections>
-                        <outlet property="tableView" destination="IOb-7x-8Zr" id="zP3-t5-ZQj"/>
-                        <outlet property="titleDate" destination="Nmt-oQ-wMM" id="NaE-BT-Qbv"/>
-                        <outlet property="titleView" destination="3qL-DU-c0t" id="Abz-L4-ndC"/>
-                        <segue destination="Yaq-Q0-Ve4" kind="presentation" identifier="SettingsSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="d2e-Ph-mIa"/>
+                        <outlet property="tableView" destination="IOb-7x-8Zr" id="GXc-Qc-jUn"/>
+                        <outlet property="titleDate" destination="Nmt-oQ-wMM" id="Zgp-zd-iUH"/>
+                        <outlet property="titleView" destination="3qL-DU-c0t" id="qim-l0-dnn"/>
+                        <segue destination="Yaq-Q0-Ve4" kind="presentation" identifier="SettingsSegue" modalPresentationStyle="overCurrentContext" modalTransitionStyle="crossDissolve" id="Ck8-pb-RkA"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-2368" y="-75"/>
+            <point key="canvasLocation" x="-2420" y="-75"/>
         </scene>
         <!--Settings View Controller-->
         <scene sceneID="4ew-u5-JqW">
@@ -260,6 +260,7 @@
                             <constraint firstItem="ZrE-kh-ekA" firstAttribute="leading" secondItem="WDe-P8-NNQ" secondAttribute="leading" constant="15" id="u3h-zt-nke"/>
                         </constraints>
                     </view>
+                    <navigationItem key="navigationItem" id="Yin-31-bWK"/>
                     <connections>
                         <outlet property="appThemeLabel" destination="zIm-2D-zrZ" id="bzO-Vp-QVm"/>
                         <outlet property="appThemeSegmentedControl" destination="Kal-k7-F5l" id="Zeq-3q-YV7"/>

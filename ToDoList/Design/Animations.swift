@@ -27,9 +27,11 @@ extension UIView {
     
     func shakeAnimation() {
         let shakeAnimation = CABasicAnimation(keyPath: "position")
-        shakeAnimation.duration = 0.2
-        shakeAnimation.repeatCount = 2
+        shakeAnimation.duration = 0.05
+        shakeAnimation.repeatCount = 3
         shakeAnimation.autoreverses = true
+        shakeAnimation.timingFunction = CAMediaTimingFunction(name:.easeIn)
+        
         let fromPoint = CGPoint(x: center.x - 5, y: center.y)
         let toPoint = CGPoint(x: center.x + 5, y: center.y)
         shakeAnimation.fromValue = fromPoint
