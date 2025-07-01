@@ -75,12 +75,15 @@ class SettingsViewController: UIViewController {
          
          if sender.selectedSegmentIndex == 0 {
              window?.overrideUserInterfaceStyle = .light
+             UserDefaults.standard.set(0, forKey: "interfacePreference")
          }
          else if sender.selectedSegmentIndex == 1 {
              window?.overrideUserInterfaceStyle = .dark
+             UserDefaults.standard.set(1, forKey: "interfacePreference")
          }
          else {
              window?.overrideUserInterfaceStyle = .unspecified
+             UserDefaults.standard.set(2, forKey: "interfacePreference")
          }
      }
 
