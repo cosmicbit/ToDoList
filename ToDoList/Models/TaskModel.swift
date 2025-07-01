@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import RealmSwift
 
 struct Task {
     
@@ -15,4 +16,12 @@ struct Task {
     let createdDate: Date
     var isComplete: Bool
     
+}
+
+class LocalTask: Object {
+    @Persisted(primaryKey: true) var _id: String
+    @Persisted var category = Category.study
+    @Persisted var caption = ""
+    @Persisted var createdDate = Date()
+    @Persisted var isComplete = false
 }
