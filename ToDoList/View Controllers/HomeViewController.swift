@@ -7,6 +7,7 @@
 
 import UIKit
 import os
+import CoreData
 
 ///This first screen you see when the app launches. This is where you see all tasks and this is the starting point for adding or editing a task. Tasks can only be deleted from here.
 class HomeViewController: UIViewController {
@@ -16,7 +17,8 @@ class HomeViewController: UIViewController {
     @IBOutlet weak var tableView: UITableView!
     @IBOutlet weak var settingsButton: UIButton!
     
-    var tasks: [Task] = []
+    var tasks: [TaskModel] = []
+    
     private var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
         dateFormatter.dateStyle = .medium
@@ -41,6 +43,7 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         setupView()
         setupNotifications()
+        tasks = fetchTasks()
     }
     
     private func setupView(){
@@ -62,6 +65,34 @@ class HomeViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(editTask(_: )), name: Notification.Name("com.philipsUIKitTraining.editTask"), object: nil)
     }
     
+    func fetchTasks() -> [TaskModel] {
+        let managedContext = AppDelegate.sharedAppDelegate.coreDataStack.managedContext
+
+        // 1. Create a fetch request for the Task entity
+        let fetchRequest: NSFetchRequest<TaskModel> = TaskModel.fetchRequest()
+
+        // Optional: Add a sort descriptor
+        // let sortDescriptor = NSSortDescriptor(key: "name", ascending: true)
+        // fetchRequest.sortDescriptors = [sortDescriptor]
+
+        // Optional: Add a predicate (filter)
+        // let predicate = NSPredicate(format: "isCompleted == %@", NSNumber(value: true))
+        // fetchRequest.predicate = predicate
+
+        do {
+            // 2. Execute the fetch request
+            let tasks = try managedContext.fetch(fetchRequest)
+            print("Fetched \(tasks.count) tasks.")
+            for task in tasks {
+                print("  - \(task.caption)")
+            }
+            return tasks
+        } catch {
+            let nsError = error as NSError
+            fatalError("Unresolved error \(nsError), \(nsError.userInfo)")
+        }
+    }
+    
     
     /**
      This responds to a task that has been created from the NewTaskViewController. The notification object holds a userInfo Object with the task that need to be updated.
@@ -71,7 +102,7 @@ class HomeViewController: UIViewController {
     @objc func createTask(_ notification: Notification){
         os_log("Task received by notification observer - create task", type: .info)
         guard let userInfo = notification.userInfo,
-              let task = userInfo["newTask"] as? Task else {
+              let task = userInfo["newTask"] as? TaskModel else {
             return
         }
         tasks.append(task)
@@ -87,18 +118,8 @@ class HomeViewController: UIViewController {
      */
     @objc func editTask(_ notification: Notification){
         os_log("Task received by notification observer - edit task", type: .info)
-        guard let userInfo = notification.userInfo,
-              let taskToUpdate = userInfo["updateTask"] as? Task else {
-            return
-        }
-        let taskIndex = tasks.firstIndex { task in
-            task.id == taskToUpdate.id
-        }
-        guard let taskIndex else {
-            return
-        }
-        
-        tasks[taskIndex] = taskToUpdate
+   
+        tasks = fetchTasks()
         tableView.reloadData()
         os_log("Task successfully edited", type: .info)
     }
@@ -145,7 +166,11 @@ extension HomeViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCell.EditingStyle, forRowAt indexPath: IndexPath) {
         if editingStyle == .delete {
-            tasks.remove(at: indexPath.row)
+            let task = tasks[indexPath.row]
+            let managedContext = AppDelegate.sharedAppDelegate.coreDataStack.managedContext
+            managedContext.delete(task)
+            AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+            tasks = fetchTasks()
             tableView.deleteRows(at: [indexPath], with: .automatic)
         }
     }
@@ -154,27 +179,18 @@ extension HomeViewController: UITableViewDataSource {
 
 //MARK: - Methods conforming to TaskTableViewCellDelegate
 extension HomeViewController: TaskTableViewCellDelegate {
-    func editTask(id: String) {
-        let task = tasks.first { task in
-            task.id == id
-        }
-        guard let task = task else {
-            return
-        }
+    func editTask(task: TaskModel) {
         
         let newTaskViewController = NewTaskViewController(task: task)
         present(newTaskViewController, animated: true)
         
     }
     
-    func markTask(id: String, complete: Bool) {
-        let taskIndex = tasks.firstIndex { task in
-            task.id == id
-        }
-        guard let taskIndex = taskIndex else {
-            return
-        }
-        tasks[taskIndex].isComplete = complete
+    func markTask(task: TaskModel, complete: Bool) {
+        
+        task.isComplete = complete
+        AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+        tasks = fetchTasks()
         tableView.reloadData()
     }
 }

@@ -15,14 +15,14 @@ class NewTaskModelView: UIView {
     
     @IBOutlet private var contentView: UIView!
     weak var delegate: NewTaskDelegate?
-    private var task: Task?
+    private var task: TaskModel?
     
     var caption: String {
         get { descriptionTextView.text }
         set { descriptionTextView.text = newValue }
     }
     
-    init(frame: CGRect, task: Task?){
+    init(frame: CGRect, task: TaskModel?){
         super.init(frame: frame)
         self.task = task
         initSubViews()
@@ -54,7 +54,8 @@ class NewTaskModelView: UIView {
         if let task = task {
             descriptionTextView.text = task.caption
             descriptionTextView.textColor = UIColor.label
-            if let rowIndex = Category.allCases.firstIndex(of: task.category){
+            let taskCategory = Category(rawValue: task.category)!
+            if let rowIndex = Category.allCases.firstIndex(of: taskCategory){
                 categoryPickerView.selectRow(rowIndex, inComponent: 0, animated: false)
             }
         }
@@ -88,7 +89,7 @@ class NewTaskModelView: UIView {
     
     
     @IBAction func submitButtonTapped(_ sender: Any) {
-        os_log("Task creation started. Submit Button Tapped", type: .info)
+        os_log("Task submit Button Tapped", type: .info)
         
         guard let caption = descriptionTextView.text,
               descriptionTextView.textColor != UIColor.placeholderText,
@@ -104,16 +105,27 @@ class NewTaskModelView: UIView {
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
         let category = Category.allCases[selectedRow]
         if let task = task {
-            let task = Task(id: task.id, category: category, caption: caption, createdDate: task.createdDate, isComplete: task.isComplete)
+
+            //let managedContext = AppDelegate.sharedAppDelegate.coreDataStack.managedContext
+            task.category = category.rawValue
+            task.caption = caption
+            task.isComplete = task.isComplete
+            AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
             let userInfo: [String: Any] = ["updateTask": task]
+            os_log("Task posted as part of notification - edit task", type: .info)
             NotificationCenter.default.post(name: NSNotification.Name("com.philipsUIKitTraining.editTask"), object: nil, userInfo: userInfo)
         }
         else {
-            let taskId = UUID().uuidString
-            let task = Task(id:taskId, category: category, caption: caption, createdDate: Date(), isComplete: false)
-            let userInfo: [String: Any] = ["newTask": task]
-            os_log("Task posted as part of notification", type: .info)
             
+            let managedContext = AppDelegate.sharedAppDelegate.coreDataStack.managedContext
+            let newTask = TaskModel(context: managedContext)
+            newTask.category = category.rawValue
+            newTask.caption = caption
+            newTask.createdDate = Date()
+            newTask.isComplete = false
+            AppDelegate.sharedAppDelegate.coreDataStack.saveContext()
+            let userInfo: [String: Any] = ["newTask": newTask ]
+            os_log("Task posted as part of notification - new task", type: .info)
             NotificationCenter.default.post(name: NSNotification.Name("com.philipsUIKitTraining.createTask"), object: nil, userInfo: userInfo)
         }
         

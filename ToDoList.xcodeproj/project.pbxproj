@@ -11,7 +11,7 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		50B272782E12482A00D1BBEB /* Exceptions for "ToDoList" folder in "ToDoList" target */ = {
+		50044DEB2E13B46B00FE2C11 /* Exceptions for "ToDoList" folder in "ToDoList" target */ = {
 			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
 			membershipExceptions = (
 				Info.plist,
@@ -21,10 +21,10 @@
 /* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
-		50B2725F2E12482900D1BBEB /* ToDoList */ = {
+		50044DD22E13B46B00FE2C11 /* ToDoList */ = {
 			isa = PBXFileSystemSynchronizedRootGroup;
 			exceptions = (
-				50B272782E12482A00D1BBEB /* Exceptions for "ToDoList" folder in "ToDoList" target */,
+				50044DEB2E13B46B00FE2C11 /* Exceptions for "ToDoList" folder in "ToDoList" target */,
 			);
 			path = ToDoList;
 			sourceTree = "<group>";
@@ -45,7 +45,7 @@
 		502011BC2E0AD77700738147 = {
 			isa = PBXGroup;
 			children = (
-				50B2725F2E12482900D1BBEB /* ToDoList */,
+				50044DD22E13B46B00FE2C11 /* ToDoList */,
 				502011C62E0AD77700738147 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -74,7 +74,7 @@
 			dependencies = (
 			);
 			fileSystemSynchronizedGroups = (
-				50B2725F2E12482900D1BBEB /* ToDoList */,
+				50044DD22E13B46B00FE2C11 /* ToDoList */,
 			);
 			name = ToDoList;
 			packageProductDependencies = (

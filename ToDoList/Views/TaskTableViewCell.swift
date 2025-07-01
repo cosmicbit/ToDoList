@@ -8,8 +8,8 @@
 import UIKit
 
 protocol TaskTableViewCellDelegate: AnyObject {
-    func editTask(id: String)
-    func markTask(id: String, complete: Bool)
+    func editTask(task: TaskModel)
+    func markTask(task: TaskModel, complete: Bool)
 }
 
 class TaskTableViewCell: UITableViewCell {
@@ -24,7 +24,7 @@ class TaskTableViewCell: UITableViewCell {
     @IBOutlet weak var dateLabel: UILabel!
     @IBOutlet weak var isCompleteImageView: UIImageView!
     private weak var delegate: TaskTableViewCellDelegate?
-    private var task: Task!
+    private var task: TaskModel!
     
     private var dateFormatter: DateFormatter {
         let dateFormatter = DateFormatter()
@@ -39,11 +39,12 @@ class TaskTableViewCell: UITableViewCell {
         containerView.clipsToBounds = true
     }
     
-    func configure(withTask task: Task, delegate: TaskTableViewCellDelegate){
-        stripView.backgroundColor = task.category.color
-        categoryContainerView.backgroundColor = task.category.secondaryColor
-        categoryLabel.textColor = task.category.color
-        categoryLabel.text = task.category.rawValue
+    func configure(withTask task: TaskModel, delegate: TaskTableViewCellDelegate){
+        let taskCategory = Category(rawValue: task.category)!
+        stripView.backgroundColor = taskCategory.color
+        categoryContainerView.backgroundColor = taskCategory.secondaryColor
+        categoryLabel.textColor = taskCategory.color
+        categoryLabel.text = task.category
         captionLabel.text = task.caption
         isCompleteImageView.image = task.isComplete ? UIImage(systemName: "checkmark.circle") : UIImage(systemName: "circle")
         dateLabel.text = dateFormatter.string(from: task.createdDate)
@@ -57,10 +58,11 @@ class TaskTableViewCell: UITableViewCell {
     
     @objc func toggleCompletion() {
         task.isComplete.toggle()
-        delegate?.markTask(id: task.id, complete: task.isComplete)
+        delegate?.markTask(task: task, complete: task.isComplete)
     }
+    
     @IBAction func editTaskButtonTapped(_ sender: Any) {
-        delegate?.editTask(id: task.id)
+        delegate?.editTask(task: task)
     }
     
 
