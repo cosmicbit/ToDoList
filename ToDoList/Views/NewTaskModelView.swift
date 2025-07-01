@@ -6,6 +6,7 @@
 //
 
 import UIKit
+import os
 
 class NewTaskModelView: UIView {
 
@@ -87,6 +88,8 @@ class NewTaskModelView: UIView {
     
     
     @IBAction func submitButtonTapped(_ sender: Any) {
+        os_log("Task creation started. Submit Button Tapped", type: .info)
+        
         guard let caption = descriptionTextView.text,
               descriptionTextView.textColor != UIColor.placeholderText,
               caption.count >= 4 && caption.count <= 50
@@ -96,6 +99,8 @@ class NewTaskModelView: UIView {
             shakeAnimation()
             return
         }
+        os_log("Validation of task succeeded", type: .info)
+        
         let selectedRow = categoryPickerView.selectedRow(inComponent: 0)
         let category = Category.allCases[selectedRow]
         if let task = task {
@@ -107,6 +112,8 @@ class NewTaskModelView: UIView {
             let taskId = UUID().uuidString
             let task = Task(id:taskId, category: category, caption: caption, createdDate: Date(), isComplete: false)
             let userInfo: [String: Any] = ["newTask": task]
+            os_log("Task posted as part of notification", type: .info)
+            
             NotificationCenter.default.post(name: NSNotification.Name("com.philipsUIKitTraining.createTask"), object: nil, userInfo: userInfo)
         }
         

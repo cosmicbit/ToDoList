@@ -12,8 +12,8 @@ import UIKit
  NewTaskDelegate links the NewTaskViewController and the NewTaskModalView . This helps the NewTaskViewController know when to dismiss when the x button is tapped on the
  the NewTaskModalView and to present an error alert when a user enters invalid input.
  */
-
 protocol NewTaskDelegate: AnyObject {
+    
     ///Dismiss the NewTaskViewController. Called when x button is tapped on NewTaskModalView
     func closeView()
     
@@ -30,7 +30,7 @@ protocol NewTaskDelegate: AnyObject {
 ///This class is responsible for creating or editing a task
 class NewTaskViewController: UIViewController {
     
-    lazy var modelView: NewTaskModelView = {
+    lazy var modalView: NewTaskModelView = {
         let modalWidth = view.frame.width - CGFloat(30)
         let modalHeight: CGFloat = 430
         let frame = CGRect(x: 15, y: view.center.y - (modalHeight / 2), width: modalWidth, height: modalHeight)
@@ -63,8 +63,8 @@ class NewTaskViewController: UIViewController {
         view.backgroundColor = UIColor.black.withAlphaComponent(0.5)
         
         //We change the transform of the model view to zero to perform a scale up animation when the view appears
-        modelView.transform = CGAffineTransform(scaleX: 0, y: 0)
-        view.addSubview(modelView)
+        modalView.transform = CGAffineTransform(scaleX: 0, y: 0)
+        view.addSubview(modalView)
         
     }
     
@@ -72,7 +72,7 @@ class NewTaskViewController: UIViewController {
         super.viewDidAppear(animated)
         
         //This animates the modal view using a scale up animation whereas it was initially set to a scale of zero in the viewDidLoad
-        modelView.scaleUpAnimation()
+        modalView.scaleUpAnimation()
     }
     
     
